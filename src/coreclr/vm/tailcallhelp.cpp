@@ -46,8 +46,15 @@ FCIMPL2(void*, TailCallHelp::GetTailCallInfo, void** retAddrSlot, void** retAddr
 
 #if defined(TARGET_ARM64)
     // We strip the return address here as it's only used for comparison and
-    // not being used to branch execution to.
-    retAddrFromSlot = PacStripPtr(retAddrFromSlot);
+    // not being used to branch execution to. PacStripPtr emits XPACI, which
+    // is in the data-processing-1-source opcode space and is UNDEFINED on
+    // cores without FEAT_PAuth (pre-ARMv8.3-A). Skip the strip when PAuth
+    // is not implemented; on such cores the slot value has no PAC bits, so
+    // the subsequent comparison is identity-equivalent to the stripped form.
+    if (g_arm64_pauth_present)
+    {
+        retAddrFromSlot = PacStripPtr(retAddrFromSlot);
+    }
 #endif // TARGET_ARM64
     *retAddr = retAddrFromSlot;
 

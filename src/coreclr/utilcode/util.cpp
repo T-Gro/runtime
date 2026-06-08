@@ -28,6 +28,7 @@ UINT32 g_nClrInstanceId = 0;
 // Flag to check if atomics feature is available on
 // the machine
 bool g_arm64_atomics_present = false;
+bool g_arm64_pauth_present = false;
 #endif
 
 #endif //!DACCESS_COMPILE

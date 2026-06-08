@@ -39,6 +39,10 @@
 #define PF_ARM_SVE_SM4_INSTRUCTIONS_AVAILABLE (56)
 #endif
 
+#ifndef PF_ARM_V83_PAC_INSTRUCTIONS_AVAILABLE
+#define PF_ARM_V83_PAC_INSTRUCTIONS_AVAILABLE (45)
+#endif
+
 #else // HOST_WINDOWS
 
 #include "minipalconfig.h"
@@ -82,6 +86,10 @@
 #endif
 #ifndef HWCAP2_SVESM4
 #define HWCAP2_SVESM4   (1 << 6)
+#endif
+
+#ifndef HWCAP_PACA
+#define HWCAP_PACA   (1 << 30)
 #endif
 
 #endif
@@ -552,6 +560,9 @@ int minipal_getcpufeatures(void)
     if (hwCap & HWCAP_SVE)
         result |= ARM64IntrinsicConstants_Sve;
 
+    if (hwCap & HWCAP_PACA)
+        result |= ARM64IntrinsicConstants_Pauth;
+
     unsigned long hwCap2 = getauxval(AT_HWCAP2);
 
     if (hwCap2 & HWCAP2_SVE2)
@@ -636,6 +647,9 @@ int minipal_getcpufeatures(void)
 
     if ((sysctlbyname("hw.optional.arm.FEAT_SVE_SM4", &valueFromSysctl, &sz, NULL, 0) == 0) && (valueFromSysctl != 0))
         result |= ARM64IntrinsicConstants_SveSm4;
+
+    if ((sysctlbyname("hw.optional.arm.FEAT_PAuth", &valueFromSysctl, &sz, NULL, 0) == 0) && (valueFromSysctl != 0))
+        result |= ARM64IntrinsicConstants_Pauth;
 #endif // HAVE_SYSCTLBYNAME
 #endif // HAVE_AUXV_HWCAP_H
 #endif // HOST_UNIX
@@ -717,6 +731,11 @@ int minipal_getcpufeatures(void)
     if (IsProcessorFeaturePresent(PF_ARM_SVE_SM4_INSTRUCTIONS_AVAILABLE))
     {
         result |= ARM64IntrinsicConstants_SveSm4;
+    }
+
+    if (IsProcessorFeaturePresent(PF_ARM_V83_PAC_INSTRUCTIONS_AVAILABLE))
+    {
+        result |= ARM64IntrinsicConstants_Pauth;
     }
 #endif // HOST_WINDOWS
 

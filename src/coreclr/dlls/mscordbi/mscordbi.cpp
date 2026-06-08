@@ -14,6 +14,7 @@
 // Flag to check if atomics feature is available on
 // the machine
 bool g_arm64_atomics_present = false;
+bool g_arm64_pauth_present = false;
 #endif
 
 extern BOOL WINAPI DbgDllMain(HINSTANCE hInstance, DWORD dwReason,

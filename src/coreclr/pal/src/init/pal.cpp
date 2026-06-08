@@ -94,6 +94,7 @@ extern bool g_running_in_exe;
 // Flag to check if atomics feature is available on
 // the machine
 bool g_arm64_atomics_present = false;
+bool g_arm64_pauth_present = false;
 #endif
 
 Volatile<INT> init_count = 0;

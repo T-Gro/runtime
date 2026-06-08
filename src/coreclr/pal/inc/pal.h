@@ -91,6 +91,10 @@ typedef PVOID NATIVE_LIBRARY_HANDLE;
 // Flag to check if atomics feature is available on
 // the machine
 extern bool g_arm64_atomics_present;
+// Flag to check if PAuth (ARMv8.3 pointer authentication) is available on
+// the machine. When false, PAC-extension instructions outside the HINT space
+// (e.g. xpaci/autib in their register-operand forms) are UNDEFINED and trap.
+extern bool g_arm64_pauth_present;
 #endif
 
 /******************* ABI-specific glue *******************************/

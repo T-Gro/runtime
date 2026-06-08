@@ -24,6 +24,7 @@
 // Flag to check if atomics feature is available on
 // the machine
 extern bool g_arm64_atomics_present;
+extern bool g_arm64_pauth_present;
 #endif
 #endif
 

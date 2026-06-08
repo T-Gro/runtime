@@ -1766,6 +1766,11 @@ void EEJitManager::SetCpuInfo()
     {
         g_arm64_atomics_present = true;
     }
+
+    if ((cpuFeatures & ARM64IntrinsicConstants_Pauth) != 0)
+    {
+        g_arm64_pauth_present = true;
+    }
 #elif defined(TARGET_RISCV64)
     if (g_pConfig->EnableHWIntrinsic())
     {
